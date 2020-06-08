@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -21,10 +22,10 @@ namespace 通信助手
     /// </summary>
     public partial class MainWindow : Window
     {
-        /// <summary>
-        /// 串口调试功能的实现
-        /// </summary>
+        
         private SerialPort ComDevice = new SerialPort();
+        private Socket TCPDivce;
+        private Socket UDPDivce;
 
         private Ports p = new Ports();
         public MainWindow()
@@ -33,6 +34,11 @@ namespace 通信助手
 
             Init_Com();
         }
+
+        /// <summary>
+        /// 串口调试功能的实现
+        /// </summary>
+        
         //更新串口列表
         private void ComPort_refresh(object sender, EventArgs e)
         {
@@ -232,5 +238,8 @@ namespace 通信助手
         /// 网口调试功能的实现
         /// </summary>
         
+
+
+
     }
 }

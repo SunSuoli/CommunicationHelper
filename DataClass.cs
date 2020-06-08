@@ -69,7 +69,7 @@ namespace 通信助手
             }
         }
 
-        //发送数据格式
+        //发送数据格式16进制或者默认
         private bool _t_text_mod;
         public bool t_text_mod
         {
@@ -86,6 +86,8 @@ namespace 通信助手
                 }
             }
         }
+
+
     }
     
 }
