@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:通信助手"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="883.2" MouseDown="Window_MouseDown">
     <Grid>
         <ComboBox x:Name="Com_Port" HorizontalAlignment="Left" Margin="90,20,0,0" VerticalAlignment="Top" Width="70" DropDownOpened="ComPort_refresh"/>
         <Label Content="串口号" HorizontalAlignment="Left" Margin="39,20,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.865,1.617"/>
@@ -24,6 +24,15 @@
         <Button x:Name="T_text_send" Content="发送" HorizontalAlignment="Left" Height="35" Margin="39,310,0,0" VerticalAlignment="Top" Width="121" FontSize="20" Click="T_text_send_Click"/>
         <CheckBox x:Name="r_mod" Content="HEX" HorizontalAlignment="Left" Margin="180,257,0,0" VerticalAlignment="Top"/>
         <CheckBox x:Name="t_mod" Content="HEX" HorizontalAlignment="Left" Margin="180,322,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="Ethernet_mod" HorizontalAlignment="Left" Margin="720,38,0,0" VerticalAlignment="Top" Width="130" DropDownOpened="ComPort_refresh" SelectionChanged="Ethernet_mod_SelectionChanged"/>
+        <Label Content="网络协议类型" HorizontalAlignment="Left" Height="28" Margin="740,10,0,0" VerticalAlignment="Top" Width="85"/>
+        <TextBox x:Name="R_text_Copy" HorizontalAlignment="Left" Height="220" Margin="445,21,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="260"/>
+        <Label x:Name="IP_label" Content="IP地址" HorizontalAlignment="Left" Height="28" Margin="740,73,0,0" VerticalAlignment="Top" Width="85"/>
+        <TextBox x:Name="Port" HorizontalAlignment="Left" Margin="720,159,0,0" VerticalAlignment="Top" Width="130"/>
+        <Label Content="端口号" HorizontalAlignment="Left" Height="28" Margin="740,126,0,0" VerticalAlignment="Top" Width="85"/>
+        <RadioButton x:Name="aa" Content="RadioButton" HorizontalAlignment="Left" Height="16" Margin="485,257,0,0" VerticalAlignment="Top" Width="55"/>
+        <ListView x:Name="IP_list" HorizontalAlignment="Left" Height="74" Margin="720,102,0,0" VerticalAlignment="Top" Width="130" MouseLeave="IP_list_MouseLeave" SelectionChanged="IP_list_SelectionChanged"/>
+        <TextBox x:Name="IP_address" HorizontalAlignment="Left" Margin="720,100,0,0" VerticalAlignment="Top" Width="130" GotFocus="IP_address_GotFocus"/>
 
     </Grid>
 </Window>

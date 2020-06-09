@@ -11,7 +11,7 @@ namespace 通信助手
     {
     }
 
-    public class Ports : INotifyPropertyChanged
+    public class Com_Port : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -89,5 +89,29 @@ namespace 通信助手
 
 
     }
-    
+
+    public class Ethernet_Port : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        //IP地址
+        private string _IP;
+        public string IP
+        {
+            get
+            {
+                return _IP;
+            }
+            set
+            {
+                _IP = value;
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("IP"));
+                }
+            }
+        }
+    }
+
+
 }

@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO.Ports;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -24,15 +27,19 @@ namespace 通信助手
     {
         
         private SerialPort ComDevice = new SerialPort();
-        private Socket TCPDivce;
-        private Socket UDPDivce;
+        
 
-        private Ports p = new Ports();
+        private Com_Port Cp = new Com_Port();
+        private Ethernet_Port Ep = new Ethernet_Port();
+
+
         public MainWindow()
         {
             InitializeComponent();
 
             Init_Com();
+            Init_Ethernet();
+
         }
 
         /// <summary>
@@ -42,7 +49,7 @@ namespace 通信助手
         //更新串口列表
         private void ComPort_refresh(object sender, EventArgs e)
         {
-            p.comports = SerialPort.GetPortNames();//将串口的硬件资源名更新到下拉列表中
+            Cp.comports = SerialPort.GetPortNames();//将串口的硬件资源名更新到下拉列表中
         }
         //打开关闭串口
         private void Com_Open_Close_Click(object sender, RoutedEventArgs e)
@@ -109,28 +116,28 @@ namespace 通信助手
 
             //绑定接收数据
             Binding rtext_binding = new Binding();
-            rtext_binding.Source = p;
+            rtext_binding.Source = Cp;
             rtext_binding.Path = new PropertyPath("r_text");
             this.R_text.SetBinding(TextBox.TextProperty, rtext_binding);
             //绑定接收数据显示模式
             Binding rtext_mod_binding = new Binding();
-            rtext_mod_binding.Source = p;
+            rtext_mod_binding.Source = Cp;
             rtext_mod_binding.Path = new PropertyPath("r_text_showmod");
             this.r_mod.SetBinding(CheckBox.IsCheckedProperty, rtext_mod_binding);
             //绑定发送数据模式
             Binding t_mod_binding = new Binding();
-            t_mod_binding.Source = p;
+            t_mod_binding.Source = Cp;
             t_mod_binding.Path = new PropertyPath("t_text_mod");
             this.t_mod.SetBinding(CheckBox.IsCheckedProperty, t_mod_binding);
             //绑定串口名称
             Binding port_binding = new Binding();
-            port_binding.Source = p;
+            port_binding.Source = Cp;
             port_binding.Path = new PropertyPath("comports");
             this.Com_Port.SetBinding(ComboBox.ItemsSourceProperty, port_binding);
             
 
             string[] ArryPort = SerialPort.GetPortNames();
-            p.comports = ArryPort;
+            Cp.comports = ArryPort;
             Com_Port.SelectedIndex = 0;
 
             Com_BaudRate.Items.Add("9600");
@@ -163,13 +170,13 @@ namespace 通信助手
         //清空串口接收数据
         private void R_text_clear_Click(object sender, RoutedEventArgs e)
         {
-            p.r_text = "";
+            Cp.r_text = "";
         }
         //串口发送数据
         private void T_text_send_Click(object sender, RoutedEventArgs e)
         {
             byte[] T_bytes;
-            if (p.t_text_mod == true)
+            if (Cp.t_text_mod == true)
             {
                 T_bytes = HexStringToString(T_text.Text);//将数据由字符串转成十六进制字节
             }
@@ -193,7 +200,7 @@ namespace 通信助手
         private  void adddata(byte[] ReDatas)
         {
             string data = string.Empty;
-            if (p.r_text_showmod==true)
+            if (Cp.r_text_showmod==true)
             {
                 foreach (int ReData in ReDatas)
                 {
@@ -205,7 +212,7 @@ namespace 通信助手
                 data = Encoding.Default.GetString(ReDatas);//将接收的字节转换成ASCII字符串，防止中文乱码
 
             }
-            p.r_text += data;
+            Cp.r_text += data;
         }
         //将十六进制的字符串转为普通字符串
         //如字符串"EE FF EF FE FA"转成字符串"?稔?"
@@ -237,9 +244,96 @@ namespace 通信助手
         /// <summary>
         /// 网口调试功能的实现
         /// </summary>
-        
+        //Socket socketWatch = null;
+        List<Socket> socConnections = new List<Socket>();
+        private void Init_Ethernet()
+        {
+            
+            //网络协议初始化
+            Ethernet_mod.Items.Add( "UDP协议");
+            Ethernet_mod.Items.Add ( "TCP服务器");
+            Ethernet_mod.Items.Add ( "TCP客户端");
 
+            //绑定IP
+            Binding IP_binding = new Binding();
+            IP_binding.Source = Ep;
+            IP_binding.Path = new PropertyPath("IP");
+            this.IP_address.SetBinding(TextBox.TextProperty, IP_binding);
+            //隐藏IP列表
+            
+            IP_list.Visibility = Visibility.Hidden;
+            //加载本地网卡IP
+            foreach(string item in GetLocalIpv4())
+            {
+                IP_list.Items.Add(item);
+            }
+            
+            IP_list.Items.Insert(0, "test");
 
+        }
+        //获取本地所有网卡的IP
+        public string[] GetLocalIpv4()
+        {
+            //事先不知道ip的个数，数组长度未知，因此用StringCollection储存
+            try
+            {
+                IPAddress[] localIPs;
+                localIPs = Dns.GetHostAddresses(Dns.GetHostName());
+                StringCollection IpCollection = new StringCollection();
+                foreach (IPAddress ip in localIPs)
+                {
+                    //根据AddressFamily判断是否为ipv4,如果是InterNetWork则为ipv6
+                    if (ip.AddressFamily == AddressFamily.InterNetwork)
+                        IpCollection.Add(ip.ToString());
+                }
+                string[] IpArray = new string[IpCollection.Count];
+                IpCollection.CopyTo(IpArray, 0);
+                return IpArray;
+            }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
+            return null;
+        }
+
+        private void IP_address_GotFocus(object sender, RoutedEventArgs e)
+        {
+            IP_list.Visibility = Visibility.Visible;
+            
+        }
+        private void IP_list_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(IP_list.Visibility== Visibility.Visible)
+            {
+                Ep.IP = IP_list.SelectedItem.ToString();
+                IP_list.Visibility = Visibility.Hidden;
+            }
+            
+        }
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            IP_list.Visibility = Visibility.Hidden;
+            IP_list.SelectedIndex = 0;
+        }
+        private void IP_list_MouseLeave(object sender, MouseEventArgs e)
+        {
+            IP_list.Visibility = Visibility.Hidden;
+            IP_list.SelectedIndex = 0;
+        }
+
+        private void Ethernet_mod_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+           if(Ethernet_mod.SelectedItem.ToString() == "TCP客户端")
+            {
+               IP_label.Content = "服务器IP";
+            }
+            else
+            {
+                IP_label.Content = "本地IP";
+            }
+        }
 
     }
 }
