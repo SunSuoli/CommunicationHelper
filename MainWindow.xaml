@@ -26,13 +26,19 @@
         <CheckBox x:Name="t_mod" Content="HEX" HorizontalAlignment="Left" Margin="180,322,0,0" VerticalAlignment="Top"/>
         <ComboBox x:Name="Ethernet_mod" HorizontalAlignment="Left" Margin="720,38,0,0" VerticalAlignment="Top" Width="130" DropDownOpened="ComPort_refresh" SelectionChanged="Ethernet_mod_SelectionChanged"/>
         <Label Content="网络协议类型" HorizontalAlignment="Left" Height="28" Margin="740,10,0,0" VerticalAlignment="Top" Width="85"/>
-        <TextBox x:Name="R_text_Copy" HorizontalAlignment="Left" Height="220" Margin="445,21,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="260"/>
+        <TextBox x:Name="E_R_text" HorizontalAlignment="Left" Height="220" Margin="445,21,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="260"/>
         <Label x:Name="IP_label" Content="IP地址" HorizontalAlignment="Left" Height="28" Margin="740,73,0,0" VerticalAlignment="Top" Width="85"/>
         <TextBox x:Name="Port" HorizontalAlignment="Left" Margin="720,159,0,0" VerticalAlignment="Top" Width="130"/>
         <Label Content="端口号" HorizontalAlignment="Left" Height="28" Margin="740,126,0,0" VerticalAlignment="Top" Width="85"/>
-        <RadioButton x:Name="aa" Content="RadioButton" HorizontalAlignment="Left" Height="16" Margin="485,257,0,0" VerticalAlignment="Top" Width="55"/>
-        <ListView x:Name="IP_list" HorizontalAlignment="Left" Height="74" Margin="720,102,0,0" VerticalAlignment="Top" Width="130" MouseLeave="IP_list_MouseLeave" SelectionChanged="IP_list_SelectionChanged"/>
+        <ListView x:Name="IP_list" HorizontalAlignment="Left" Height="74" Margin="720,102,0,0" VerticalAlignment="Top" Width="130" MouseLeave="IP_list_MouseLeave" SelectionChanged="IP_list_SelectionChanged" Visibility="Hidden"/>
         <TextBox x:Name="IP_address" HorizontalAlignment="Left" Margin="720,100,0,0" VerticalAlignment="Top" Width="130" GotFocus="IP_address_GotFocus"/>
+        <Button x:Name="Ethernet_connect_break" Content="连接" HorizontalAlignment="Left" Height="30" Margin="725,225,0,0" VerticalAlignment="Top" Width="125" Click="Ethernet_connect_break_Click" FontSize="20"/>
+        <TextBox x:Name="E_T_text" HorizontalAlignment="Left" Height="34" Margin="445,286,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="260"/>
+        <Button x:Name="E_T_text_send" Content="发送" HorizontalAlignment="Left" Height="35" Margin="725,310,0,0" VerticalAlignment="Top" Width="121" FontSize="20" Click="E_T_text_send_Click"/>
+        <TextBox x:Name="target_IP_address" HorizontalAlignment="Left" Margin="497,325,0,0" VerticalAlignment="Top" Width="101" GotFocus="IP_address_GotFocus"/>
+        <Label x:Name="target_IP_address_label" Content="目标设备" HorizontalAlignment="Left" Height="32" Margin="435,320,0,0" VerticalAlignment="Top" Width="60"/>
+        <TextBox x:Name="target_Port" HorizontalAlignment="Left" Margin="645,325,0,0" VerticalAlignment="Top" Width="60" GotFocus="IP_address_GotFocus"/>
+        <Label x:Name="target_Port_label" Content="端口号" HorizontalAlignment="Left" Height="28" Margin="599,322,0,0" VerticalAlignment="Top" Width="45"/>
 
     </Grid>
 </Window>

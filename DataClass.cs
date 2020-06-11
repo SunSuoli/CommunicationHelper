@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace 通信助手
@@ -111,7 +113,48 @@ namespace 通信助手
                 }
             }
         }
+
+        private string _Port;
+        public string Port
+        {
+            get
+            {
+                return _Port;
+            }
+            set
+            {
+                _Port = value;
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("Port"));
+                }
+            }
+        }
+
+        //串口接收数据
+        private string _r_text;
+        public string r_text
+        {
+            get
+            {
+                return _r_text;
+            }
+            set
+            {
+                _r_text = value;
+                if (PropertyChanged != null)
+                {
+                    PropertyChanged(this, new PropertyChangedEventArgs("r_text"));
+                }
+            }
+        }
     }
 
+    public class Ethernets
+    {
+        public static Socket udp;
+        public static Socket tcp_client;
+        public static Socket tcp_server;
+    }
 
 }

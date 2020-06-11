@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -27,12 +28,11 @@ namespace 通信助手
     {
         
         private SerialPort ComDevice = new SerialPort();
-        
 
         private Com_Port Cp = new Com_Port();
         private Ethernet_Port Ep = new Ethernet_Port();
 
-
+        Thread thread_udp;
         public MainWindow()
         {
             InitializeComponent();
@@ -246,7 +246,7 @@ namespace 通信助手
         /// </summary>
         //Socket socketWatch = null;
         List<Socket> socConnections = new List<Socket>();
-        private void Init_Ethernet()
+        public void Init_Ethernet()
         {
             
             //网络协议初始化
@@ -259,16 +259,28 @@ namespace 通信助手
             IP_binding.Source = Ep;
             IP_binding.Path = new PropertyPath("IP");
             this.IP_address.SetBinding(TextBox.TextProperty, IP_binding);
+
+            //绑定端口号
+            Binding Port_binding = new Binding();
+            Port_binding.Source = Ep;
+            Port_binding.Path = new PropertyPath("Port");
+            this.Port.SetBinding(TextBox.TextProperty, Port_binding);
             //隐藏IP列表
-            
+
             IP_list.Visibility = Visibility.Hidden;
             //加载本地网卡IP
-            foreach(string item in GetLocalIpv4())
+            //因为ItemsSource与Insert同时使用会有冲突，所以通过for循环将IP插入列表中
+            foreach (string item in GetLocalIpv4())
             {
                 IP_list.Items.Add(item);
             }
-            
-            IP_list.Items.Insert(0, "test");
+            IP_list.Items.Insert(0, "");
+
+            //绑定接收数据
+            Binding rtext_binding = new Binding();
+            rtext_binding.Source = Ep;
+            rtext_binding.Path = new PropertyPath("r_text");
+            this.E_R_text.SetBinding(TextBox.TextProperty, rtext_binding);
 
         }
         //获取本地所有网卡的IP
@@ -325,15 +337,98 @@ namespace 通信助手
 
         private void Ethernet_mod_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-           if(Ethernet_mod.SelectedItem.ToString() == "TCP客户端")
+            switch (Ethernet_mod.SelectedIndex)
             {
-               IP_label.Content = "服务器IP";
-            }
-            else
-            {
-                IP_label.Content = "本地IP";
+                case 0:
+                    IP_label.Content = "本地IP";
+                    Ethernet_connect_break.Content = "连接";
+                    target_IP_address.Visibility = Visibility.Visible;
+                    target_IP_address_label.Visibility= Visibility.Visible;
+                    target_Port.Visibility = Visibility.Visible;
+                    target_Port_label.Visibility = Visibility.Visible;
+                    break;
+                case 1:
+                    IP_label.Content = "本地IP";
+                    Ethernet_connect_break.Content = "侦听";
+                    target_IP_address.Visibility = Visibility.Visible;
+                    target_IP_address_label.Visibility = Visibility.Visible;
+                    target_Port.Visibility = Visibility.Hidden;
+                    target_Port_label.Visibility = Visibility.Hidden;
+                    break;
+                case 2:
+                    IP_label.Content = "服务器IP";
+                    Ethernet_connect_break.Content = "连接";
+                    target_IP_address.Visibility = Visibility.Hidden;
+                    target_IP_address_label.Visibility = Visibility.Hidden;
+                    target_Port.Visibility = Visibility.Hidden;
+                    target_Port_label.Visibility = Visibility.Hidden;
+                    break;
             }
         }
 
+        private void Ethernet_connect_break_Click(object sender, RoutedEventArgs e)
+        {
+            if (Ethernet_connect_break.Content.ToString() != "断开")
+            {
+                Ethernet_connect_break.Content = "断开";
+                switch (Ethernet_mod.SelectedIndex)
+                {
+                    case 0:
+                        Ethernets.udp = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                        Ethernets.udp.Bind(new IPEndPoint(IPAddress.Parse(Ep.IP), Convert.ToInt32(Ep.Port)));//绑定端口号和IP
+                        thread_udp = new Thread(udp_);
+                        thread_udp.Start();
+                        break;
+                    case 1:
+                        break;
+                    case 2:
+                        break;
+                }
+            }
+            else
+            {
+                switch (Ethernet_mod.SelectedIndex)
+                {
+                    case 0:
+                        Ethernet_connect_break.Content = "连接";
+                        thread_udp.Abort();
+                        Ethernets.udp.Close();
+                        break;
+                    case 1:
+                        Ethernet_connect_break.Content = "侦听";
+                        break;
+                    case 2:
+                        Ethernet_connect_break.Content = "连接";
+                        break;
+                }
+            }
+        }
+        private void udp_()
+        {
+            while (true)
+            {
+                EndPoint point = new IPEndPoint(IPAddress.Any, 0);//用来保存发送方的ip和端口号
+                byte[] buffer = new byte[1024];
+                int length = Ethernets.udp.ReceiveFrom(buffer, ref point);//接收数据报
+                string message = Encoding.UTF8.GetString(buffer, 0, length);
+                Ep.r_text += point.ToString() + message;
+            }
+            
+        }
+        private void tcp_client()
+        {
+
+        }
+        private void tcp_server()
+        {
+
+        }
+
+        private void E_T_text_send_Click(object sender, RoutedEventArgs e)
+        {
+            EndPoint point = new IPEndPoint(IPAddress.Parse(target_IP_address.Text), Convert.ToInt32(target_Port.Text));
+            string msg = E_T_text.Text;
+            Ethernets.udp.SendTo(Encoding.UTF8.GetBytes(msg), point);
+        }
     }
 }
