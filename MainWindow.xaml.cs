@@ -407,11 +407,19 @@ namespace 通信助手
         {
             while (true)
             {
-                EndPoint point = new IPEndPoint(IPAddress.Any, 0);//用来保存发送方的ip和端口号
-                byte[] buffer = new byte[1024];
-                int length = Ethernets.udp.ReceiveFrom(buffer, ref point);//接收数据报
-                string message = Encoding.UTF8.GetString(buffer, 0, length);
-                Ep.r_text += point.ToString() + message;
+                try
+                {
+                    EndPoint point = new IPEndPoint(IPAddress.Any, 0);//用来保存发送方的ip和端口号
+                    byte[] buffer = new byte[1024];
+                    int length = Ethernets.udp.ReceiveFrom(buffer, ref point);//接收数据报
+                    string message = Encoding.Default.GetString(buffer, 0, length);//将字节数组转化成ASCII字符串，Default可防止乱码
+                    Ep.r_text += point.ToString() + message;
+                }
+                catch
+                {
+
+                }
+               
             }
             
         }
@@ -426,9 +434,17 @@ namespace 通信助手
 
         private void E_T_text_send_Click(object sender, RoutedEventArgs e)
         {
-            EndPoint point = new IPEndPoint(IPAddress.Parse(target_IP_address.Text), Convert.ToInt32(target_Port.Text));
             string msg = E_T_text.Text;
-            Ethernets.udp.SendTo(Encoding.UTF8.GetBytes(msg), point);
+            try
+            {
+                EndPoint point = new IPEndPoint(IPAddress.Parse(target_IP_address.Text), Convert.ToInt32(target_Port.Text));
+                Ethernets.udp.SendTo(Encoding.Default.GetBytes(msg), point);
+            }
+            catch(Exception err)
+            {
+                MessageBox.Show(err.Message);
+            }
+            
         }
     }
 }
