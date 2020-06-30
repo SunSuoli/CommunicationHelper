@@ -7,38 +7,42 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="883.2" MouseDown="Window_MouseDown">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="41*"/>
+            <RowDefinition Height="169*"/>
+        </Grid.RowDefinitions>
         <ComboBox x:Name="Com_Port" HorizontalAlignment="Left" Margin="90,20,0,0" VerticalAlignment="Top" Width="70" DropDownOpened="ComPort_refresh"/>
         <Label Content="串口号" HorizontalAlignment="Left" Margin="39,20,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.865,1.617"/>
-        <ComboBox x:Name="Com_BaudRate" HorizontalAlignment="Left" Margin="90,65,0,0" VerticalAlignment="Top" Width="70" DropDownOpened="ComPort_refresh" IsSynchronizedWithCurrentItem="False"/>
-        <Label Content="波特率" HorizontalAlignment="Left" Margin="39,65,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.865,1.617"/>
-        <ComboBox x:Name="Com_ParityBit" HorizontalAlignment="Left" Margin="90,110,0,0" VerticalAlignment="Top" Width="70" DropDownOpened="ComPort_refresh"/>
-        <Label Content="校验位" HorizontalAlignment="Left" Margin="39,110,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.865,1.617"/>
-        <ComboBox x:Name="Com_DataBit" HorizontalAlignment="Left" Margin="90,155,0,0" VerticalAlignment="Top" Width="70" DropDownOpened="ComPort_refresh"/>
-        <Label Content="数据位" HorizontalAlignment="Left" Margin="39,155,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.865,1.617"/>
-        <ComboBox x:Name="Com_StopBit" HorizontalAlignment="Left" Margin="90,200,0,0" VerticalAlignment="Top" Width="70" DropDownOpened="ComPort_refresh"/>
-        <Label Content="停止位" HorizontalAlignment="Left" Margin="39,200,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.865,1.617"/>
-        <Button x:Name="Com_Open_Close" Content="打开" HorizontalAlignment="Left" Height="35" Margin="39,245,0,0" VerticalAlignment="Top" Width="121" Click="Com_Open_Close_Click" FontSize="20"/>
-        <TextBox x:Name="R_text" HorizontalAlignment="Left" Height="220" Margin="180,20,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="260"/>
-        <TextBox x:Name="T_text" HorizontalAlignment="Left" Height="34" Margin="180,286,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="260"/>
-        <Button x:Name="R_text_clear" Content="清除" HorizontalAlignment="Left" Height="35" Margin="249,245,0,0" VerticalAlignment="Top" Width="121" FontSize="20" Click="R_text_clear_Click"/>
-        <Button x:Name="T_text_send" Content="发送" HorizontalAlignment="Left" Height="35" Margin="39,310,0,0" VerticalAlignment="Top" Width="121" FontSize="20" Click="T_text_send_Click"/>
-        <CheckBox x:Name="r_mod" Content="HEX" HorizontalAlignment="Left" Margin="180,257,0,0" VerticalAlignment="Top"/>
-        <CheckBox x:Name="t_mod" Content="HEX" HorizontalAlignment="Left" Margin="180,322,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="Com_BaudRate" HorizontalAlignment="Left" Margin="90,65,0,0" VerticalAlignment="Top" Width="70" DropDownOpened="ComPort_refresh" IsSynchronizedWithCurrentItem="False" Grid.RowSpan="2"/>
+        <Label Content="波特率" HorizontalAlignment="Left" Margin="39,65,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.865,1.617" Grid.RowSpan="2"/>
+        <ComboBox x:Name="Com_ParityBit" HorizontalAlignment="Left" Margin="90,28,0,0" VerticalAlignment="Top" Width="70" DropDownOpened="ComPort_refresh" Grid.Row="1"/>
+        <Label Content="校验位" HorizontalAlignment="Left" Margin="39,28,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.865,1.617" Grid.Row="1"/>
+        <ComboBox x:Name="Com_DataBit" HorizontalAlignment="Left" Margin="90,73,0,0" VerticalAlignment="Top" Width="70" DropDownOpened="ComPort_refresh" Grid.Row="1"/>
+        <Label Content="数据位" HorizontalAlignment="Left" Margin="39,73,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.865,1.617" Grid.Row="1"/>
+        <ComboBox x:Name="Com_StopBit" HorizontalAlignment="Left" Margin="90,118,0,0" VerticalAlignment="Top" Width="70" DropDownOpened="ComPort_refresh" Grid.Row="1"/>
+        <Label Content="停止位" HorizontalAlignment="Left" Margin="39,118,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.865,1.617" Grid.Row="1"/>
+        <Button x:Name="Com_Open_Close" Content="打开" HorizontalAlignment="Left" Height="35" Margin="39,163,0,0" VerticalAlignment="Top" Width="121" Click="Com_Open_Close_Click" FontSize="20" Grid.Row="1"/>
+        <TextBox x:Name="R_text" HorizontalAlignment="Left" Height="220" Margin="180,20,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="260" Grid.RowSpan="2"/>
+        <TextBox x:Name="T_text" HorizontalAlignment="Left" Height="34" Margin="180,204,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="260" Grid.Row="1"/>
+        <Button x:Name="R_text_clear" Content="清除" HorizontalAlignment="Left" Height="35" Margin="249,163,0,0" VerticalAlignment="Top" Width="121" FontSize="20" Click="R_text_clear_Click" Grid.Row="1"/>
+        <Button x:Name="T_text_send" Content="发送" HorizontalAlignment="Left" Height="35" Margin="39,228,0,0" VerticalAlignment="Top" Width="121" FontSize="20" Click="T_text_send_Click" Grid.Row="1"/>
+        <CheckBox x:Name="r_mod" Content="HEX" HorizontalAlignment="Left" Margin="180,175,0,0" VerticalAlignment="Top" Grid.Row="1"/>
+        <CheckBox x:Name="t_mod" Content="HEX" HorizontalAlignment="Left" Margin="180,240,0,0" VerticalAlignment="Top" Grid.Row="1"/>
         <ComboBox x:Name="Ethernet_mod" HorizontalAlignment="Left" Margin="720,38,0,0" VerticalAlignment="Top" Width="130" DropDownOpened="ComPort_refresh" SelectionChanged="Ethernet_mod_SelectionChanged"/>
         <Label Content="网络协议类型" HorizontalAlignment="Left" Height="28" Margin="740,10,0,0" VerticalAlignment="Top" Width="85"/>
-        <TextBox x:Name="E_R_text" HorizontalAlignment="Left" Height="220" Margin="445,21,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="260"/>
-        <Label x:Name="IP_label" Content="IP地址" HorizontalAlignment="Left" Height="28" Margin="740,73,0,0" VerticalAlignment="Top" Width="85"/>
-        <TextBox x:Name="Port" HorizontalAlignment="Left" Margin="720,159,0,0" VerticalAlignment="Top" Width="130"/>
-        <Label Content="端口号" HorizontalAlignment="Left" Height="28" Margin="740,126,0,0" VerticalAlignment="Top" Width="85"/>
-        <ListView x:Name="IP_list" HorizontalAlignment="Left" Height="74" Margin="720,102,0,0" VerticalAlignment="Top" Width="130" MouseLeave="IP_list_MouseLeave" SelectionChanged="IP_list_SelectionChanged" Visibility="Hidden"/>
-        <TextBox x:Name="IP_address" HorizontalAlignment="Left" Margin="720,100,0,0" VerticalAlignment="Top" Width="130" GotFocus="IP_address_GotFocus"/>
-        <Button x:Name="Ethernet_connect_break" Content="连接" HorizontalAlignment="Left" Height="30" Margin="725,225,0,0" VerticalAlignment="Top" Width="125" Click="Ethernet_connect_break_Click" FontSize="20"/>
-        <TextBox x:Name="E_T_text" HorizontalAlignment="Left" Height="34" Margin="445,286,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="260"/>
-        <Button x:Name="E_T_text_send" Content="发送" HorizontalAlignment="Left" Height="35" Margin="725,310,0,0" VerticalAlignment="Top" Width="121" FontSize="20" Click="E_T_text_send_Click"/>
-        <TextBox x:Name="target_IP_address" HorizontalAlignment="Left" Margin="497,325,0,0" VerticalAlignment="Top" Width="101"/>
-        <Label x:Name="target_IP_address_label" Content="目标设备" HorizontalAlignment="Left" Height="32" Margin="435,320,0,0" VerticalAlignment="Top" Width="60"/>
-        <TextBox x:Name="target_Port" HorizontalAlignment="Left" Margin="645,325,0,0" VerticalAlignment="Top" Width="60"/>
-        <Label x:Name="target_Port_label" Content="端口号" HorizontalAlignment="Left" Height="28" Margin="599,322,0,0" VerticalAlignment="Top" Width="45"/>
+        <TextBox x:Name="E_R_text" HorizontalAlignment="Left" Height="220" Margin="445,21,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="260" Grid.RowSpan="2"/>
+        <Label x:Name="IP_label" Content="IP地址" HorizontalAlignment="Left" Height="28" Margin="740,73,0,0" VerticalAlignment="Top" Width="85" Grid.RowSpan="2"/>
+        <TextBox x:Name="Port" HorizontalAlignment="Left" Margin="720,77,0,0" VerticalAlignment="Top" Width="130" Grid.Row="1"/>
+        <Label Content="端口号" HorizontalAlignment="Left" Height="28" Margin="740,44,0,0" VerticalAlignment="Top" Width="85" Grid.Row="1"/>
+        <ListView x:Name="IP_list" HorizontalAlignment="Left" Height="74" Margin="720,20,0,0" VerticalAlignment="Top" Width="130" MouseLeave="IP_list_MouseLeave" SelectionChanged="IP_list_SelectionChanged" Visibility="Hidden" Grid.Row="1"/>
+        <TextBox x:Name="IP_address" HorizontalAlignment="Left" Margin="720,18,0,0" VerticalAlignment="Top" Width="130" GotFocus="IP_address_GotFocus" Grid.Row="1"/>
+        <Button x:Name="Ethernet_connect_break" Content="连接" HorizontalAlignment="Left" Height="30" Margin="725,143,0,0" VerticalAlignment="Top" Width="125" Click="Ethernet_connect_break_Click" FontSize="20" Grid.Row="1"/>
+        <TextBox x:Name="E_T_text" HorizontalAlignment="Left" Height="34" Margin="445,204,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="260" Grid.Row="1"/>
+        <Button x:Name="E_T_text_send" Content="发送" HorizontalAlignment="Left" Height="35" Margin="725,228,0,0" VerticalAlignment="Top" Width="121" FontSize="20" Click="E_T_text_send_Click" Grid.Row="1"/>
+        <TextBox x:Name="target_IP_address" HorizontalAlignment="Left" Margin="497,243,0,0" VerticalAlignment="Top" Width="101" Grid.Row="1"/>
+        <Label x:Name="target_IP_address_label" Content="目标设备" HorizontalAlignment="Left" Height="32" Margin="435,238,0,0" VerticalAlignment="Top" Width="60" Grid.Row="1"/>
+        <TextBox x:Name="target_Port" HorizontalAlignment="Left" Margin="645,243,0,0" VerticalAlignment="Top" Width="60" Grid.Row="1"/>
+        <Label x:Name="target_Port_label" Content="端口号" HorizontalAlignment="Left" Height="28" Margin="599,240,0,0" VerticalAlignment="Top" Width="45" Grid.Row="1"/>
 
     </Grid>
 </Window>
